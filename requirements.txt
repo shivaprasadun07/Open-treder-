@@ -1,0 +1,8 @@
+pyyaml
+ccxt
+pandas
+scikit-learn
+tensorflow
+ta
+httpx
+joblib

@@ -1,0 +1,55 @@
+# -----------------------------------------------------------------------------
+# |                      YOUR MAIN BOT CONFIGURATION                          |
+# -----------------------------------------------------------------------------
+# -- Exchange API Credentials --
+# IMPORTANT: Use environment variables in production for security.
+# For now, you can paste them here for simplicity when running locally.
+exchange:
+  api_key: "ITyHM08bzHD4mC5bCdLV9mNvskjpGOrrkAlSlCov6VLglaODkZlXw2OF70AhDb0J"
+  api_secret: "TFeOLkdrjTKYgoodaPrHkmdMAEjp8S5z5q3YwGivLop6lRwhSt4QBB30dgqE20ie"
+  is_testnet: True  # SET THIS TO False TO TRADE WITH REAL MONEY
+
+# -- Telegram Bot for Notifications and Control --
+telegram:
+  token: "8054916178:AAEjX1Kmfo7BX0W1RNqvWujffuY8yRg3_FQ"
+  chat_id: "5486361382" # Your personal chat ID to receive messages
+
+# -- Trading Strategy Parameters --
+strategy:
+  # Pairs to trade. Use the format: 'BASE/QUOTE' for spot or 'BASE/QUOTE:QUOTE' for futures.
+  pairs:
+    - 'BTC/USDT'
+    - 'ETH/USDT'
+  timeframe: '15m'       # Candle interval (e.g., '1m', '5m', '15m', '1h', '4h')
+  min_probability: 0.25  # Minimum model confidence to open a trade (0.0 to 1.0)
+
+# -- Risk Management Parameters --
+risk:
+  portfolio_pct_per_trade: 0.02  # Use 2% of your total portfolio for each new trade
+  max_concurrent_trades: 5       # Do not open more than 5 trades at the same time
+  # Dynamic leverage based on model confidence
+  leverage_tiers:
+    0.70: 1  # 70% confidence -> 1x leverage
+    0.85: 3  # 85% confidence -> 3x leverage
+    0.95: 5  # 95% confidence -> 5x leverage
+  # Trailing stop loss ATR multiplier. A smaller number trails closer to the price.
+  trailing_sl_atr_multiplier: 2.0
+
+# -- Model Configuration --
+model:
+  # These files MUST be created by running the trainer.py script first!
+  rf_model_path: "models/rf_model.pkl"
+  lstm_weights_path: "models/lstm.weights.h5"
+  scaler_path: "models/scaler.pkl"
+  # This MUST match the features the model was trained on
+  feature_names:
+    - "trend_macd_diff"
+    - "momentum_rsi"
+    - "volatility_bbw"
+    - "volume_cmf"
+    - "trend_adx"
+    - "momentum_stoch"
+    - "trend_ema_fast"
+    - "trend_ema_slow"
+    - "volatility_atr"
+    - "volume_obv"
